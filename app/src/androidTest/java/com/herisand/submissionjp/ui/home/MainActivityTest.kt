@@ -41,7 +41,6 @@ class MainActivityTest {
 
     @Test
     fun loadRVMovie(){
-//        delayTriSecond()
         onView(withId(R.id.rv_movie)).check(matches(isDisplayed()))
         onView(withId(R.id.rv_movie)).perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(dataMovie.size))
         onView(withId(R.id.rv_movie)).perform(swipeUp())
@@ -49,9 +48,7 @@ class MainActivityTest {
 
     @Test
     fun loadDetailMovie(){
-//        delayTriSecond()
         onView(withId(R.id.rv_movie)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
-//        delayTriSecond()
         onView(withId(R.id.tv_title_detail)).check(matches(isDisplayed()))
         onView(withId(R.id.tv_title_detail)).check(matches(withText(dataMovie[0].title)))
         onView(withId(R.id.img_detail)).check(matches(isDisplayed()))
@@ -61,7 +58,6 @@ class MainActivityTest {
         onView(withId(R.id.tv_description_detail)).check(matches(withText(dataMovie[0].description)))
         onView(withId(R.id.rat_detail)).check(matches(isDisplayed()))
         onView(withId(R.id.bg_img)).check(matches(isDisplayed()))
-//        delayTriSecond()
     }
 
     @Test
@@ -70,15 +66,12 @@ class MainActivityTest {
         onView(withId(R.id.view_pager)).perform(swipeLeft())
         onView(withId(R.id.rv_tvshows)).check(matches(isDisplayed()))
         onView(withId(R.id.rv_tvshows)).perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(dataTv.size))
-//        delayTriSecond()
     }
 
     @Test
     fun loadDetailTV(){
         onView(withText("TV SHOWS")).perform(click())
-//        delayTriSecond()
         onView(withId(R.id.rv_tvshows)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
-//        delayTriSecond()
         onView(withId(R.id.tv_title_detail)).check(matches(isDisplayed()))
         onView(withId(R.id.tv_title_detail)).check(matches(withText(dataTv[0].title)))
         onView(withId(R.id.img_detail)).check(matches(isDisplayed()))
@@ -88,17 +81,8 @@ class MainActivityTest {
         onView(withId(R.id.tv_description_detail)).check(matches(withText(dataTv[0].description)))
         onView(withId(R.id.rat_detail)).check(matches(isDisplayed()))
         onView(withId(R.id.bg_img)).check(matches(isDisplayed()))
-//        delayTriSecond()
         pressBack()
 
-    }
-
-    private fun delayTriSecond() {
-        try {
-            Thread.sleep(2000)
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-        }
     }
 
 }

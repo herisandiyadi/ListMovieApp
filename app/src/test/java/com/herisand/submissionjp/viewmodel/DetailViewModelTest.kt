@@ -92,8 +92,8 @@ class DetailViewModelTest{
             assertEquals(genres, detailTVShow?.genres)
         }
 
-        viewModel.getDetailContent().observeForever(movieObserver)
-        verify(movieObserver).onChanged(dummyDetailMovie)
+        viewModel.getDetailContent().observeForever(tvShowObserver)
+        verify(tvShowObserver).onChanged(dummyDetailMovie)
     }
 
 }
