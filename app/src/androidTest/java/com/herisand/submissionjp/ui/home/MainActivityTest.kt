@@ -32,9 +32,9 @@ class MainActivityTest {
         IdlingRegistry.getInstance().unregister(EspressoIdlingResource.idlingResource)
     }
 
-
     @Test
     fun fPager(){
+        onView(withId(R.id.view_pager)).check(matches(isDisplayed()))
         onView(withId(R.id.view_pager)).perform(swipeLeft())
         onView(withId(R.id.view_pager)).perform(swipeRight())
     }
