@@ -7,8 +7,7 @@ import androidx.lifecycle.Observer
 import com.herisand.submissionjp.datafile.source.local.entity.TvData
 import com.herisand.submissionjp.datafile.source.remote.repository.ListRepository
 import com.herisand.submissionjp.utils.DataDummy
-import junit.framework.TestCase.assertEquals
-import junit.framework.TestCase.assertNotNull
+import junit.framework.TestCase.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

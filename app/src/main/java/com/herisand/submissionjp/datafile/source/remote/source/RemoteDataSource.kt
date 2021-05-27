@@ -7,6 +7,7 @@ import com.herisand.submissionjp.datafile.source.remote.response.movie.MoviesRes
 import com.herisand.submissionjp.datafile.source.remote.response.tvshow.TVShowRemote
 import com.herisand.submissionjp.datafile.source.remote.response.tvshow.TVShowResponse
 import com.herisand.submissionjp.datafile.source.remote.response.tvshow.TVShowsDetailResponse
+import com.herisand.submissionjp.resources.Resource
 import com.herisand.submissionjp.utils.EspressoIdlingResource
 import com.herisand.submissionjp.utils.network.RetrofitClient
 import retrofit2.Call
