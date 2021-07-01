@@ -2,29 +2,41 @@ package com.herisand.submissionjp.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.herisand.submissionjp.datafile.source.local.entity.DetailData
+import com.herisand.submissionjp.datafile.source.local.entity.MovieEntity
+import com.herisand.submissionjp.datafile.source.local.entity.TvEntity
 import com.herisand.submissionjp.datafile.source.remote.repository.ListRepository
+import com.herisand.submissionjp.resources.Resource
 
 class DetailViewModel(private  val listRepository: ListRepository): ViewModel() {
 
-    private lateinit var detailContent: LiveData<DetailData>
+    private lateinit var detailMovie: LiveData<Resource<MovieEntity>>
+    private lateinit var detailTVShow: LiveData<Resource<TvEntity>>
 
-    companion object{
-        const val MOVIE = "detail_movie"
-        const val TV_SHOW = "detail_tv"
+    fun setDetailMovie(movieId: Int) : LiveData<Resource<MovieEntity>> {
+        detailMovie = listRepository.loadDetailMovies(movieId)
+        return detailMovie
     }
 
-    fun setDetailContent(id: String, select: String) {
-        when(select) {
-            MOVIE -> {
-                detailContent = listRepository.loadDetailMovies(id)
-            }
-            TV_SHOW -> {
-                detailContent = listRepository.loadDetailTVShows(id)
-            }
+    fun setDetailTVShow(tvShowId: Int) : LiveData<Resource<TvEntity>> {
+        detailTVShow = listRepository.loadDetailTVShows(tvShowId)
+        return detailTVShow
+    }
+
+    fun setMovieFav() {
+        val dataMovie = detailMovie.value
+        if (dataMovie?.data !=null) {
+            val newState = !dataMovie.data.favorite
+            listRepository.setMovieFav(dataMovie.data, newState)
+
         }
     }
 
-    fun getDetailContent() = detailContent
+    fun setTVShowFav() {
+        val dataTVShow = detailTVShow.value
+        if (dataTVShow?.data !=null) {
+            val newState = !dataTVShow.data.favorite
+            listRepository.setTVShowsFav(dataTVShow.data, newState)
+        }
+    }
 
 }

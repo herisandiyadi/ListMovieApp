@@ -1,13 +1,20 @@
 package com.herisand.submissionjp.datafile.source.remote.source
 
 import androidx.lifecycle.LiveData
-import com.herisand.submissionjp.datafile.source.local.entity.DetailData
-import com.herisand.submissionjp.datafile.source.local.entity.MovieData
-import com.herisand.submissionjp.datafile.source.local.entity.TvData
+import androidx.paging.PagedList
+import com.herisand.submissionjp.datafile.source.local.entity.*
+import com.herisand.submissionjp.resources.Resource
 
 interface ListDataSource {
-    fun loadMovies(): LiveData<List<MovieData>>
-    fun loadTVShows(): LiveData<List<TvData>>
-    fun loadDetailMovies(movieID: String): LiveData<DetailData>
-    fun loadDetailTVShows(tvShowID: String): LiveData<DetailData>
+    fun loadMovies(): LiveData<Resource<PagedList<MovieEntity>>>
+    fun loadTVShows(): LiveData<Resource<PagedList<TvEntity>>>
+
+    fun loadDetailMovies(movieID: Int): LiveData<Resource<MovieEntity>>
+    fun loadDetailTVShows(tvShowID: Int): LiveData<Resource<TvEntity>>
+
+    fun setMovieFav(movie: MovieEntity, state: Boolean)
+    fun setTVShowsFav(tvShow : TvEntity, state: Boolean)
+
+    fun getMoviesFav(): LiveData<PagedList<MovieEntity>>
+    fun getTVShowsFav(): LiveData<PagedList<TvEntity>>
 }

@@ -25,5 +25,7 @@ data class TVShowRemote(
     val date : String,
 
     @field:SerializedName("backdrop_path")
-    val background: String
+    val background: String,
+
+    val favorite: Boolean
 ): Parcelable

@@ -3,8 +3,11 @@ package com.herisand.submissionjp.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.paging.PagedList
 import com.herisand.submissionjp.datafile.source.local.entity.MovieData
+import com.herisand.submissionjp.datafile.source.local.entity.MovieEntity
 import com.herisand.submissionjp.datafile.source.remote.repository.ListRepository
+import com.herisand.submissionjp.resources.Resource
 import com.herisand.submissionjp.utils.DataDummy
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertNotNull
@@ -30,7 +33,10 @@ class MovieViewModelTest{
     private lateinit var listRepository: ListRepository
 
     @Mock
-    private lateinit var observer: Observer<List<MovieData>>
+    private lateinit var observer: Observer<Resource<PagedList<MovieEntity>>>
+
+    @Mock
+    private lateinit var moviePagedList: PagedList<MovieEntity>
 
     @Before
     fun setMovie(){
@@ -39,15 +45,16 @@ class MovieViewModelTest{
 
     @Test
     fun getMovie() {
-        val dummyMovie = DataDummy.generateDataMovie()
-        val listMovies = MutableLiveData<List<MovieData>>()
+        val dummyMovie = Resource.success(moviePagedList)
+        `when` (dummyMovie.data?.size).thenReturn(5)
+        val listMovies = MutableLiveData<Resource<PagedList<MovieEntity>>>()
         listMovies.value = dummyMovie
 
         `when`(listRepository.loadMovies()).thenReturn(listMovies)
-        val movieData = viewModel.getMovie().value
+        val movieEntity = viewModel.getMovie().value?.data
         verify(listRepository).loadMovies()
-        assertNotNull(movieData)
-        assertEquals(20, movieData?.size)
+        assertNotNull(movieEntity)
+        assertEquals(5, movieEntity?.size)
 
         viewModel.getMovie().observeForever(observer)
         verify(observer).onChanged(dummyMovie)

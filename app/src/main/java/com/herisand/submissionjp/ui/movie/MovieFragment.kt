@@ -1,24 +1,23 @@
 package com.herisand.submissionjp.ui.movie
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.herisand.submissionjp.databinding.FragmentMovieBinding
-import com.herisand.submissionjp.ui.detail.DetailMovieActivity
-import com.herisand.submissionjp.viewmodel.DetailViewModel.Companion.MOVIE
+import com.herisand.submissionjp.resources.Status
 import com.herisand.submissionjp.viewmodel.MovieViewModel
 import com.herisand.submissionjp.viewmodel.ViewModelFactory
 
-
-class MovieFragment : Fragment(), MovieAdapter.OnItemClickCallback {
+class MovieFragment : Fragment(){
 
     private lateinit var fragmentMovieBinding: FragmentMovieBinding
     private lateinit var movieAdapter: MovieAdapter
+    private lateinit var viewModel : MovieViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -31,32 +30,43 @@ class MovieFragment : Fragment(), MovieAdapter.OnItemClickCallback {
         super.onViewCreated(view, savedInstanceState)
         if (activity !=null) {
             val factory = ViewModelFactory.getInstance(requireActivity())
-            val viewModel = ViewModelProvider(this, factory)[MovieViewModel::class.java]
+            viewModel = ViewModelProvider(this, factory)[MovieViewModel::class.java]
             movieAdapter = MovieAdapter()
 
-            fragmentMovieBinding.progressBar.visibility = View.VISIBLE
-            viewModel.getMovie().observe(viewLifecycleOwner, { movies ->
-                fragmentMovieBinding.progressBar.visibility = View.GONE
-                movieAdapter.setMovies(movies)
-                movieAdapter.notifyDataSetChanged()
-                movieAdapter.setOnClickCallback(this@MovieFragment)
-            })
-
-            with(fragmentMovieBinding.rvMovie) {
-                layoutManager = LinearLayoutManager(context)
-                setHasFixedSize(true)
-                adapter = movieAdapter
-            }
+           viewModel.getMovie().observe(viewLifecycleOwner, { movie ->
+               if (movie !=null) {
+                   when (movie.status) {
+                       Status.LOADING -> true.progressBar()
+                       Status.SUCCESS -> {
+                           false.progressBar()
+                           with(movieAdapter) {
+                               submitList(movie.data)
+                           }
+                       }
+                       Status.ERROR -> {
+                           false.progressBar()
+                           Toast.makeText(context, "Data gagal dimuat",
+                           Toast.LENGTH_LONG).show()
+                       }
+                   }
+               }
+           })
+            setRecyclerView()
         }
     }
 
-    override fun onItemClicked(id: String) {
-        Intent(context, DetailMovieActivity::class.java).also {
-            it.putExtra(DetailMovieActivity.EXTRA_DATA, id)
-            it.putExtra(DetailMovieActivity.EXTRA_MOVIE, MOVIE)
-            context?.startActivity(it)
+    private fun setRecyclerView() {
+        with(fragmentMovieBinding.rvMovie) {
+            layoutManager = LinearLayoutManager(context)
+            adapter = movieAdapter
+            setHasFixedSize(true)
         }
     }
 
+    private fun Boolean.progressBar() {
+        fragmentMovieBinding.progressBar.visibility = if (this) View.VISIBLE else View.GONE
+    }
 
 }
+
+

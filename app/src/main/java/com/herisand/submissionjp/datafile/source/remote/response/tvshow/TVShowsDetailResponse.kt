@@ -26,5 +26,7 @@ data class TVShowsDetailResponse(
     val background: String,
 
     @SerializedName("genres")
-    val genres: List<GenreResponse>
+    val genres: List<GenreResponse>,
+
+    val favorite: Boolean
 )

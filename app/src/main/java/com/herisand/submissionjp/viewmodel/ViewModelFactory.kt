@@ -30,7 +30,9 @@ class ViewModelFactory private constructor(private val mListRepository: ListRepo
             modelClass.isAssignableFrom(DetailViewModel::class.java) -> {
                 return DetailViewModel(mListRepository) as T
             }
-
+            modelClass.isAssignableFrom(FavoriteViewModel::class.java) -> {
+                return FavoriteViewModel(mListRepository) as T
+            }
             else -> throw  Throwable("Unknown ViewModel class : " + modelClass.name)
         }
 

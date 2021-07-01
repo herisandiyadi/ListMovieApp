@@ -20,6 +20,5 @@ data class DetailData(
     val date: String,
     @SerializedName("backdrop_path")
     val background: String,
-    @SerializedName("genres")
-    val genres: List<String>
+    val favorite: Boolean
 ):Parcelable

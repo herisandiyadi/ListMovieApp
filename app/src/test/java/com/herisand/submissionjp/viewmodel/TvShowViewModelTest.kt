@@ -4,8 +4,11 @@ package com.herisand.submissionjp.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.paging.PagedList
 import com.herisand.submissionjp.datafile.source.local.entity.TvData
+import com.herisand.submissionjp.datafile.source.local.entity.TvEntity
 import com.herisand.submissionjp.datafile.source.remote.repository.ListRepository
+import com.herisand.submissionjp.resources.Resource
 import com.herisand.submissionjp.utils.DataDummy
 import junit.framework.TestCase.*
 import org.junit.Before
@@ -30,7 +33,10 @@ class TvShowViewModelTest {
     private lateinit var listRepository: ListRepository
 
     @Mock
-    private lateinit var observer: Observer<List<TvData>>
+    private lateinit var observer: Observer<Resource<PagedList<TvEntity>>>
+
+    @Mock
+    private lateinit var tvPagedList: PagedList<TvEntity>
 
     @Before
     fun setTvShow(){
@@ -39,15 +45,16 @@ class TvShowViewModelTest {
 
     @Test
     fun getTvShow() {
-        val dummyData = DataDummy.generateDataTv()
-        val tvShows = MutableLiveData<List<TvData>>()
+        val dummyData = Resource.success(tvPagedList)
+        `when` (dummyData.data?.size).thenReturn(5)
+        val tvShows = MutableLiveData<Resource<PagedList<TvEntity>>>()
         tvShows.value = dummyData
 
         `when`(listRepository.loadTVShows()).thenReturn(tvShows)
-        val tvShowEntities = viewModel.getTvShow().value
+        val tvShowEntities = viewModel.getTvShow().value?.data
         verify(listRepository).loadTVShows()
         assertNotNull(tvShows)
-        assertEquals(20, tvShowEntities?.size)
+        assertEquals(5, tvShowEntities?.size)
 
         viewModel.getTvShow().observeForever(observer)
         verify(observer).onChanged(dummyData)

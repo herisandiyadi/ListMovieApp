@@ -4,6 +4,8 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
+import androidx.test.espresso.ViewAction
+import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
@@ -51,7 +53,6 @@ class MainActivityTest {
         onView(withId(R.id.rv_movie)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
         onView(withId(R.id.tv_title_detail)).check(matches(isDisplayed()))
         onView(withId(R.id.img_detail)).check(matches(isDisplayed()))
-        onView(withId(R.id.tv_genre_detail)).check(matches(isDisplayed()))
         onView(withId(R.id.tv_year_detail)).check(matches(isDisplayed()))
         onView(withId(R.id.tv_description_detail)).check(matches(isDisplayed()))
         onView(withId(R.id.rat_detail)).check(matches(isDisplayed()))
@@ -72,12 +73,60 @@ class MainActivityTest {
         onView(withId(R.id.rv_tvshows)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
         onView(withId(R.id.tv_title_detail)).check(matches(isDisplayed()))
         onView(withId(R.id.img_detail)).check(matches(isDisplayed()))
-        onView(withId(R.id.tv_genre_detail)).check(matches(isDisplayed()))
         onView(withId(R.id.tv_year_detail)).check(matches(isDisplayed()))
         onView(withId(R.id.tv_description_detail)).check(matches(isDisplayed()))
         onView(withId(R.id.rat_detail)).check(matches(isDisplayed()))
         onView(withId(R.id.bg_img)).check(matches(isDisplayed()))
         pressBack()
+
+    }
+
+    @Test
+    fun loadListFavMovie() {
+        onView(withId(R.id.rv_movie)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
+        onView(withId(R.id.btn_fav)).perform(click())
+
+        onView(isRoot()).perform(pressBack())
+
+        onView(withId(R.id.btn_fav_menu)).perform(click())
+
+        onView(withId(R.id.rv_movie_fav)).check(matches(isDisplayed()))
+        onView(withId(R.id.rv_movie_fav)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
+
+        onView(withId(R.id.tv_title_detail)).check(matches(isDisplayed()))
+        onView(withId(R.id.img_detail)).check(matches(isDisplayed()))
+        onView(withId(R.id.tv_year_detail)).check(matches(isDisplayed()))
+        onView(withId(R.id.tv_description_detail)).check(matches(isDisplayed()))
+        onView(withId(R.id.rat_detail)).check(matches(isDisplayed()))
+        onView(withId(R.id.bg_img)).check(matches(isDisplayed()))
+
+        onView(withId(R.id.btn_fav)).perform(click())
+        onView(isRoot()).perform(pressBack())
+    }
+
+    @Test
+    fun loadListFavTvShows() {
+        onView(withText("TV SHOWS")).perform(click())
+        onView(withId(R.id.rv_tvshows)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
+        onView(withId(R.id.btn_fav)).perform(click())
+
+        onView(isRoot()).perform(pressBack())
+
+        onView(withId(R.id.btn_fav_menu)).perform(click())
+
+        onView(withText("TV SHOWS")).perform(click())
+        onView(withId(R.id.rv_tvShow_fav)).check(matches(isDisplayed()))
+        onView(withId(R.id.rv_tvShow_fav)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
+
+        onView(withId(R.id.tv_title_detail)).check(matches(isDisplayed()))
+        onView(withId(R.id.img_detail)).check(matches(isDisplayed()))
+        onView(withId(R.id.tv_year_detail)).check(matches(isDisplayed()))
+        onView(withId(R.id.tv_description_detail)).check(matches(isDisplayed()))
+        onView(withId(R.id.rat_detail)).check(matches(isDisplayed()))
+        onView(withId(R.id.bg_img)).check(matches(isDisplayed()))
+
+        onView(withId(R.id.btn_fav)).perform(click())
+        onView(isRoot()).perform(pressBack())
 
     }
 
