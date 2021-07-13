@@ -4,7 +4,6 @@ import androidx.annotation.NonNull
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.herisand.submissionjp.datafile.source.remote.response.GenreResponse
 
 @Entity(tableName= "movieentity" )
 data class MovieEntity(

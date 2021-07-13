@@ -5,11 +5,9 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.paging.PagedList
-import com.herisand.submissionjp.datafile.source.local.entity.TvData
 import com.herisand.submissionjp.datafile.source.local.entity.TvEntity
 import com.herisand.submissionjp.datafile.source.remote.repository.ListRepository
 import com.herisand.submissionjp.resources.Resource
-import com.herisand.submissionjp.utils.DataDummy
 import junit.framework.TestCase.*
 import org.junit.Before
 import org.junit.Rule

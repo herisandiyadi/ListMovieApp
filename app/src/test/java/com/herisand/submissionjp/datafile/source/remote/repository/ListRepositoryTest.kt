@@ -12,12 +12,11 @@ import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertNotNull
-
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
-import javax.sql.DataSource
+
 
 
 class ListRepositoryTest {
@@ -107,6 +106,25 @@ class ListRepositoryTest {
         verify(local).getFavoriteMovie()
         assertNotNull(movieEntities)
         assertEquals(movieResponse.size, movieEntities.data?.size)
+    }
+
+    @Test
+    fun setFavTVShow() {
+        listRepository.setTVShowsFav(DetailDataDummy.getDetailTVShow(), true)
+        verify(local).updateTvShowFavorite(DetailDataDummy.getDetailTVShow(), true)
+        verifyNoMoreInteractions(local)
+    }
+
+    @Test
+    fun getFavTVShow() {
+        val dataSourceFactory = mock(androidx.paging.DataSource.Factory::class.java) as androidx.paging.DataSource.Factory<Int, TvEntity>
+        `when` (local.getFavoriteTvShow()).thenReturn(dataSourceFactory)
+        listRepository.getTVShowsFav()
+
+        val tvShowEntities = Resource.success(PagedListUtil.mockPagedList(DataDummy.generateDataTv()))
+        verify(local).getFavoriteTvShow()
+        assertNotNull(tvShowEntities)
+        assertEquals(tvShowResponse.size, tvShowEntities.data?.size)
     }
 
 }
